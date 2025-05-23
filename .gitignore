@@ -1,0 +1,34 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+
+# Playwright
+test-results/
+playwright-report/
+*.log
+
+# Cobertura de testes
+coverage/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ambiente
+.env
+.env.*
+
+# Arquivos temporários
+*.tmp
+*.swp
+*.bak

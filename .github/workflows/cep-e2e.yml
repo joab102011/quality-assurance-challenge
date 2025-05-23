@@ -1,0 +1,67 @@
+name: CEP E2E Tests
+
+on:
+  # Executa diariamente às 03:00 BRT
+  schedule:
+    - cron: '0 3 * * *'
+  # Executa em pull requests, mas não bloqueia o pipeline
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'tests/e2e/**'
+      - 'tests/api/**'
+      - 'tests/features/**'
+      - 'tests/pages/**'
+      - 'tests/steps/**'
+
+jobs:
+  e2e-tests:
+    name: E2E Tests
+    # Não bloqueia o pipeline em caso de falha
+    continue-on-error: true
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    
+    - name: Run E2E Tests
+      run: npx playwright test
+      env:
+        # Configurações para melhorar a estabilidade
+        PLAYWRIGHT_SKIP_BROWSER_GC: 1
+        PLAYWRIGHT_BROWSERS_PATH: 0
+        PLAYWRIGHT_TIMEOUT: 60000
+    
+    - name: Upload test results
+      id: upload
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+    
+    - name: Notify on failure
+      if: ${{ failure() }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '⚠️ Os testes E2E falharam. Por favor, verifique o relatório em: ${{ steps.upload.outputs.url }}'
+          }) 

@@ -1,0 +1,41 @@
+{
+  "name": "quality-assurance-challenge",
+  "version": "1.0.0",
+  "description": "Desafio de automação de testes para busca de CEP",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:api": "npx playwright test tests/api",
+    "test:frontend": "npx playwright test tests/e2e/functional",
+    "test:tc": "npx playwright test -g",
+    "report": "npx playwright show-report",
+    "postinstall": "npx playwright install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ONErpm-Lab/quality-assurance-challenge.git"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "testing",
+    "qa"
+  ],
+  "author": "Joab Cruz",
+  "bugs": {
+    "url": "https://github.com/ONErpm-Lab/quality-assurance-challenge/issues"
+  },
+  "homepage": "https://github.com/ONErpm-Lab/quality-assurance-challenge#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@types/axios": "^0.9.36",
+    "axios": "^1.9.0",
+    "sharp": "^0.34.2",
+    "tesseract.js": "^6.0.1"
+  }
+}
